@@ -33,7 +33,7 @@ block content
     }
   .page-header
     if user
-      .wallettitle(align='center') DNR
+      .wallettitle(align='center') FOXY
       .balance(align='center')
         | #{balance}
       #swap.swapbalance(onclick='swp()', data-text-swap=btc+' BTC', align='center')
@@ -58,16 +58,16 @@ block content
                   form.form-horizontal(action='/newaddress', method='POST')
                     input(type='hidden', name='_csrf', value=_csrf)
                     button.btn.btn-default(type='submit')
-                      | Get a new DNR Address
+                      | Get a new FOXY Address
                 .col-xs-6
                   a.btn.btn-default(href='/withdraw', role='button')
                     i.fa.fa-paper-plane
-                    |  Send Denarius
+                    |  Send Foxy
         .col-xl-6
           .panel.panel-default
             .panel-heading.mbs
               .pull-left
-                | Denarius Wallet Address
+                | Foxy Wallet Address
               .pull-right
                 a#plus.minus(onclick='hide()')
                   i.fa.fa-minus
@@ -111,7 +111,7 @@ block content
                   .txaddress !{transaction.address}
                 p(align='center') 
                   | TX ID: 
-                  a.txid(href="https://chainz.cryptoid.info/dnr/tx.dws?" + transaction.txid, target='_blank') !{transaction.txid.substring(0,30)}
+                  a.txid(href="http://35.237.235.3:8080/tx/" + transaction.txid, target='_blank') !{transaction.txid.substring(0,30)}
           else
             br
             h3(align='center', style='color: #bbb;') No Transactions Available

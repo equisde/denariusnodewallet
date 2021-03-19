@@ -1,5 +1,5 @@
 {
-  "name": "DenariusNodeWallet",
+  "name": "FoxyNodeWallet",
   "version": "1.0.0",
   "description": "A Web Wallet for denariusd in NodeJS",
   "repository": {

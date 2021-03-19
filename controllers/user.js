@@ -164,7 +164,7 @@ exports.postSignup = (req, res, next) => {
 exports.getAccount = (req, res) => {
       var key = req.user.secret;
       if(req.user.secret) {
-        var qrData = sprintf('otpauth://totp/%s?secret=%s', 'Denarius Wallet: '+req.user.email, key);
+        var qrData = sprintf('otpauth://totp/%s?secret=%s', 'Foxy Wallet: '+req.user.email, key);
         var url = "https://chart.googleapis.com/chart?chs=125x125&chld=L|0&cht=qr&chl=" + qrData;
       }
 
@@ -375,7 +375,7 @@ exports.postReset = (req, res, next) => {
     const mailOptions = {
       to: user.email,
       from: 'no-reply@denariuswallet.io',
-      subject: 'Your DenariusWallet.io password has been changed',
+      subject: 'Your FoxyWallet.io password has been changed',
       text: `Hello,\n\nThis is a confirmation that the password for your account ${user.email} has just been changed.\n`
     };
     return transporter.sendMail(mailOptions)
@@ -449,7 +449,7 @@ exports.postForgot = (req, res, next) => {
     const mailOptions = {
       to: user.email,
       from: 'no-reply@denariuswallet.io',
-      subject: 'Reset your password on DenariusWallet.io',
+      subject: 'Reset your password on FoxyWallet.io',
       text: `You are receiving this email because you (or someone else) have requested the reset of the password for your account.\n\n
         Please click on the following link, or paste this into your browser to complete the process:\n\n
         http://${req.headers.host}/reset/${token}\n\n

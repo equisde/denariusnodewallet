@@ -1,5 +1,5 @@
 
-Denarius [DNR] NodeJS Web Wallet
+Foxy [FOXY] NodeJS Web Wallet
 =======================
 
 [![Dependency Status](https://david-dm.org/carsenk/denariusnodewallet/status.svg?style=flat)](https://david-dm.org/carsenk/denariusnodewallet) [![Build Status](https://travis-ci.org/carsenk/denariusnodewallet.svg?branch=master)](https://travis-ci.org/carsenk/denariusnodewallet) [![Join the chat at https://gitter.im/denariusproject/Lobby](https://badges.gitter.im/Join%20Chat.svg)](https://gitter.im/denariusproject/Lobby?utm_source=share-link&utm_medium=link&utm_campaign=share-link) [![Thinkful Pair on Node](https://tf-assets-staging.s3.amazonaws.com/badges/thinkful_repo_badge.svg)](http://start.thinkful.com/node/)
@@ -9,11 +9,11 @@ Denarius [DNR] NodeJS Web Wallet
 
 **Live Demo**: Currently unavailable
 
-Denarius Node Wallet - A NodeJS/MongoDB powered denariusd Web Wallet.
+Foxy Node Wallet - A NodeJS/MongoDB powered denariusd Web Wallet.
 
 Send and Receive Funds, Create new addresses, View Transactions, Edit your account, and more!
 
-Swap between your DNR Balance in USD and BTC prices calculated from http://coinmarketcap.com/currencies/denarius-dnr/
+Swap between your FOXY Balance in USD and BTC prices calculated from http://coinmarketcap.com/currencies/denarius-foxy/
 
 2FA Authentication is included as well as QR Codes for addresses and 2FA!
 
@@ -23,13 +23,13 @@ Table of Contents
 - [Features](#features)
 - [Prerequisites](#prerequisites)
 - [Getting Started](#getting-started)
-- [Denarius Daemon Setup](#denarius-daemon-setup)
+- [Foxy Daemon Setup](#denarius-daemon-setup)
 - [License](#license)
 
 Features
 --------
 
-- Send and Receive DNR
+- Send and Receive FOXY
 - Wallet Addresses, Create new ones
 - View all transactions
 - Two Factor Authentication
@@ -102,14 +102,14 @@ save you a lot of time in the long run, because you won't need to manually
 restart the server each time you make a small change in code. To install, run
 `sudo npm install -g nodemon`.
 
-Denarius Daemon Setup
+Foxy Daemon Setup
 ------------------
 
-You must have a Denarius daemon running on a local server or remote server (highly recommend using SSL)
+You must have a Foxy daemon running on a local server or remote server (highly recommend using SSL)
 
 Your configuration options should be set within your .env file, you can check the .env.example for examples
 
-In your denarius.conf file (The Denariusd/QT configuration file) add the following to allow use of the web wallet.
+In your denarius.conf file (The Foxyd/QT configuration file) add the following to allow use of the web wallet.
 
 ```bash
 

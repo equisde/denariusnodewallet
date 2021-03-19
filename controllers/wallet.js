@@ -14,10 +14,10 @@ var sendJSONResponse = function (res, status, content) {
 
 // all config options are optional
 var client = new bitcoin.Client({
-    host: process.env.DNRHOST,
-    port: process.env.DNRPORT,
-    user: process.env.DNRUSER,
-    pass: process.env.DNRPASS,
+    host: process.env.FOXYHOST,
+    port: process.env.FOXYPORT,
+    user: process.env.FOXYUSER,
+    pass: process.env.FOXYPASS,
     timeout: 30000
 });
 
@@ -27,14 +27,14 @@ var client = new bitcoin.Client({
  */
 exports.getWithdraw = (req, res) => {
   var username = req.user.email;
-  client.getBalance(`dnrw(${username})`, 10, function (error, balance, resHeaders) {
+  client.getBalance(`foxyw(${username})`, 10, function (error, balance, resHeaders) {
       if (error) return console.log(error);
 
       if (balance <= 0) {
         balance = 0;
       }
     res.render('account/withdraw', {
-        title: 'Send DNR',
+        title: 'Send FOXY',
         balance: balance
     });
   });
@@ -44,7 +44,7 @@ exports.addresses = function (req, res) {
   var username = req.user.email;
 
   //List All Addresses
-  client.getAddressesByAccount(`dnrw(${username})`, function (err, addresses, resHeaders) {
+  client.getAddressesByAccount(`foxyw(${username})`, function (err, addresses, resHeaders) {
       if (err) return console.log(err);
 
       var addy = addresses.slice(-1)[0];
@@ -63,7 +63,7 @@ exports.wallet = function (req, res) {
     var username = req.user.email;
 
     //List Balances
-    client.getBalance(`dnrw(${username})`, 10, function (error, balance, resHeaders) {
+    client.getBalance(`foxyw(${username})`, 10, function (error, balance, resHeaders) {
         if (error) return console.log(error);
 
         if (balance <= 0) {
@@ -71,18 +71,18 @@ exports.wallet = function (req, res) {
         }
 
         //List Transactions
-        client.listTransactions(`dnrw(${username})`, 5, function (err, transactions, resHeaders) {
+        client.listTransactions(`foxyw(${username})`, 5, function (err, transactions, resHeaders) {
             if (err) return console.log(err);
 
         //List Account Address
-        //client.getAccountAddress(`dnrw(${username})`, function (error, address, resHeaders) {
-        client.getAddressesByAccount(`dnrw(${username})`, function (err, addresses, resHeaders) {
+        //client.getAccountAddress(`foxyw(${username})`, function (error, address, resHeaders) {
+        client.getAddressesByAccount(`foxyw(${username})`, function (err, addresses, resHeaders) {
             if (error) return console.log(error);
 
             var address = addresses.slice(-1)[0];
 
             if (typeof address == 'undefined') {
-                client.getNewAddress(`dnrw(${username})`, function (error, addr, resHeaders) {
+                client.getNewAddress(`foxyw(${username})`, function (error, addr, resHeaders) {
                   if (error) return console.log(error);
                   address = addr;
                 });
@@ -90,7 +90,7 @@ exports.wallet = function (req, res) {
 
             var qr = 'denarius:'+address;
 
-            unirest.get("https://api.coinmarketcap.com/v1/ticker/denarius-dnr/")
+            unirest.get("https://api.coinmarketcap.com/v1/ticker/denarius-foxy/")
               .headers({'Accept': 'application/json'})
               .end(function (result) {
                 var usdprice = result.body[0]['price_usd'] * balance;
@@ -110,9 +110,9 @@ exports.wallet = function (req, res) {
     for (var i = 0; i < 10; ++i) {
         batch.push({
             method: 'getbalance',
-            params: [`dnrw(${username})`],
+            params: [`foxyw(${username})`],
             method: 'getaddressesbyaccount',
-            params: [`dnrw(${username})`]
+            params: [`foxyw(${username})`]
         });
     }
     client.cmd(batch, function (err, balance, addresses, resHeaders) {
@@ -128,21 +128,21 @@ exports.wallet = function (req, res) {
 exports.address = function (req, res) {
     var username = req.user.email;
 
-    client.getNewAddress(`dnrw(${username})`, function (error, address, resHeaders) {
+    client.getNewAddress(`foxyw(${username})`, function (error, address, resHeaders) {
         if (error) return console.log(error);
 
         var qr = 'denarius:'+address
 
         QRCode.toDataURL(qr, function(err, data_url) {
 
-        res.render('account/newaddress', { title: 'New DNR Address', user: req.user, address: address, data_url: data_url });
+        res.render('account/newaddress', { title: 'New FOXY Address', user: req.user, address: address, data_url: data_url });
     });
   });
 };
 
 /**
  * POST /withdraw
- * Send Denarius funds
+ * Send Foxy funds
  */
 exports.withdraw = (req, res, next) => {
 	  var fee = 0.0001;
@@ -150,21 +150,21 @@ exports.withdraw = (req, res, next) => {
     var sendtoaddress = req.body.sendaddress;
     var amount = req.body.amount;
 
-    client.getBalance(`dnrw(${username})`, 10, function (error, balance, resHeaders) {
+    client.getBalance(`foxyw(${username})`, 10, function (error, balance, resHeaders) {
         if (error) return console.log(error);
 
-    var valid = WAValidator.validate(`${sendtoaddress}`, 'DNR');
+    var valid = WAValidator.validate(`${sendtoaddress}`, 'FOXY');
 
     if (parseFloat(amount) - fee > balance) {
 
-        req.flash('errors', { msg: 'Withdrawal amount exceeds your DNR balance'});
+        req.flash('errors', { msg: 'Withdrawal amount exceeds your FOXY balance'});
         return res.redirect('/withdraw');
 
     } else {
 
     if (valid) {
 
-        client.sendFrom(`dnrw(${username})`, `${sendtoaddress}`, parseFloat(`${amount}`), 10, function (error, sendFromtx, resHeaders) {
+        client.sendFrom(`foxyw(${username})`, `${sendtoaddress}`, parseFloat(`${amount}`), 10, function (error, sendFromtx, resHeaders) {
             if (error) {
 
                 req.flash('errors', { msg: 'Insufficient Funds or Invalid Amount!' });
@@ -175,14 +175,14 @@ exports.withdraw = (req, res, next) => {
                 var sendtx = sendFromtx;
                 var vamount = parseFloat(`${amount}`);
 
-                req.flash('success', { msg: `Your ${vamount} DNR was sent successfully! TX ID: ${sendtx}` });
+                req.flash('success', { msg: `Your ${vamount} FOXY was sent successfully! TX ID: ${sendtx}` });
                 return res.redirect('/withdraw');
             }
         });
 
     } else {
 
-        req.flash('errors', { msg: 'You entered an invalid Denarius (DNR) Address!' });
+        req.flash('errors', { msg: 'You entered an invalid Foxy (FOXY) Address!' });
         return res.redirect('/withdraw');
     }
   }
@@ -193,7 +193,7 @@ exports.transactions = function (req, res) {
       var username = req.user.email;
 
       //List Transactions
-      client.listTransactions(`dnrw(${username})`, 10000, function (err, transactions, resHeaders) {
+      client.listTransactions(`foxyw(${username})`, 10000, function (err, transactions, resHeaders) {
           if (err) return console.log(err);
 
         res.render('account/tx', { title: 'Transactions', user: req.user, transactions: transactions });
